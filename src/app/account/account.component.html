@@ -1,0 +1,53 @@
+<h1>My name is Manoj</h1>
+<app-contact (clickedRow)="localhndler($event)" [nameList]="dtStudent" [age]="10"></app-contact>
+
+<h1>{{ longText}} -- Interpolation</h1>
+<h1>{{ (longText | uppercase) +" " + (longText | lowercase) }} </h1>
+<h1>{{ longText | lowercase}} </h1>
+<h1>{{ longText | titlecase}} </h1>
+<h1>{{ longText | slice:1:5}} </h1>
+<h2>{{ dtStudent | json}}</h2>
+<h3> {{ salary | number:"1.1-2"}} </h3>
+<h3> {{ salary | currency:"INR":true : "6.10-20"}} </h3>
+<h3> {{ salary | percent:"6.10-20"}} </h3>
+<h1>{{myBirthday | date:'d-MMM-yyyy HH:mm:ss a'}}</h1>
+<h3> {{ 10 | mahesh:30 :203}}</h3>
+<form [formGroup]="myForm" (ngSubmit)="updateDtae()">
+    <h2>
+        <input type="text" formControlName="name" (keyup)="xyz($event)"/> <br />
+        <span style="color: red">{{getErrors('name')}}</span>
+    </h2>
+    <h2> <select formControlName="gender">
+            <ng-container *ngFor="let gn of gender">
+                <option [value]="gn">{{gn}}</option>
+            </ng-container>
+        </select>
+        <span style="color: red">{{getErrors('gender')}}</span>
+    </h2>
+    <h2> <input type="text" formControlName="age" /> <br />
+        <span style="color: red">{{getErrors('age')}}</span>
+    </h2>
+    <h2> <input type="text" formControlName="password" /> <br />
+        <span style="color: red">{{getErrors('password')}}</span>
+    </h2>
+    <h2> <input type="text" formControlName="cnfpassword" /> <br />
+        <span style="color: red">{{getErrors('cnfpassword')}}</span>
+        <span style="color: red" *ngIf="myForm.errors && myForm.errors['passwordMatch'] == true">
+            Password Does not match
+        </span>
+    </h2>
+    <span formGroupName="address">
+        <h2> <input type="text" formControlName="line1" /></h2>
+        <br />
+        <span style="color: red">{{getErrors('address.line1')}}</span>
+        <h2> <input type="text" formControlName="line2" /></h2>
+        <span formGroupName="state">
+            <h2> <input type="text" formControlName="statename"><br />
+                <span style="color: red">{{getErrors('address.state.statename')}}</span>
+            </h2>
+            <h2> <input type="text" formControlName="pincode"></h2>
+        </span>
+    </span>
+    <h1>{{myForm.errors | json}}</h1>
+    <button type="submit">MySUbit</button>
+</form>
