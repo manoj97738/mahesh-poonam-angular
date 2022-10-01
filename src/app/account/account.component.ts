@@ -1,5 +1,7 @@
 import { Component, Input, Output, EventEmitter, AfterViewInit } from "@angular/core";
 import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl } from "@angular/forms";
+import { ActivatedRoute, ActivatedRouteSnapshot, ParamMap, Router, RouterState, RouterStateSnapshot } from "@angular/router";
+import { Observable } from "rxjs";
 import { getControls, customValidators } from "../myvalidation";
 @Component({
     selector: "app-account",
@@ -18,6 +20,7 @@ export class AccountComponent implements AfterViewInit {
         { name: "manie", age: 20 },
         { name: "rahul", age: 30 }
     ]
+
     myForm: FormGroup = new FormGroup({
         name: getControls("", { req: true }),
         age: getControls("", { req: true }),
@@ -34,6 +37,32 @@ export class AccountComponent implements AfterViewInit {
         })
     }, [this.formLevelVal]);
 
+
+    // Read Dynamic Route
+    constructor(public actived: ActivatedRoute ) {
+       
+         
+        this.name = "";
+        // this is for /sdasd/3234243 dynamic parameters
+        this.actived.params.subscribe((params: any) => {
+            console.log(params.accountid);
+            console.log(params.type);
+            this.name = params.accountid;
+        });
+        // this is for ?t=3234623
+        this.actived.queryParams.subscribe((params: any) => {
+            console.log(params.accountid);
+            console.log(params.type);
+            this.name = params.accountid;
+        });
+
+        this.actived.data.subscribe((data: any) => {
+            console.log(data);
+           
+        });
+    }
+
+    // form
     formLevelVal(form: any): ValidatorFn | null | { [key: string]: any } {
         const forVal: any = form.value;
         if (forVal.password != ""
@@ -77,9 +106,7 @@ export class AccountComponent implements AfterViewInit {
         }
         return "";
     }
-    constructor() {
-        this.name = "";
-    }
+
     localhndler(data: any) {
         console.log(data);
         this.edit = true;
