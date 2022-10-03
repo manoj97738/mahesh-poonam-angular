@@ -1,5 +1,5 @@
 import { NgModule } from "@angular/core";
-import { Routes, RouterModule, RouterStateSnapshot } from "@angular/router";
+import { Routes, RouterModule } from "@angular/router";
 
 import { CustomCommonModule } from "./../custom.common.module";
 import { AdminDashboardComponent } from "./admin-dashboard/admin-dashboard.component";
@@ -9,13 +9,12 @@ import { AdminInnerChildComponent } from "./adimin-inner-child/adimin-inner-chil
 const myRoute: Routes = [
     {
         path: '', component: AdminDashboardComponent, children: [
-            { path: "notone", component: AdminInnerChildComponent, }
+            { path: "notone", component: AdminInnerChildComponent }
         ]
     }
 ]
 
 @NgModule({
-    // com
     declarations: [
         AdminDashboardComponent,
         AdminInnerChildComponent
@@ -24,7 +23,6 @@ const myRoute: Routes = [
         RouterModule.forChild(myRoute),
         CustomCommonModule,
     ],
-
     exports: [
         RouterModule, // this line is important
     ]

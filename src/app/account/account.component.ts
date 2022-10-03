@@ -1,11 +1,12 @@
 import { Component, Input, Output, EventEmitter, AfterViewInit } from "@angular/core";
-import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl } from "@angular/forms";
+import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl, FormBuilder, FormArray } from "@angular/forms";
 import { ActivatedRoute, ActivatedRouteSnapshot, ParamMap, Router, RouterState, RouterStateSnapshot } from "@angular/router";
 import { Observable } from "rxjs";
 import { getControls, customValidators } from "../myvalidation";
 @Component({
     selector: "app-account",
-    templateUrl: "./account.component.html"
+    templateUrl: "./account.component.html",
+
 })
 export class AccountComponent implements AfterViewInit {
     title = 'hello';
@@ -28,20 +29,51 @@ export class AccountComponent implements AfterViewInit {
         password: new FormControl("", Validators.required),
         cnfpassword: new FormControl("", Validators.required),
         address: new FormGroup({
-            line1: new FormControl("", [Validators.required, Validators.minLength(5)]),
-            line2: new FormControl(""),
-            state: new FormGroup({
+            line1: this.formbuilder.control("", [Validators.required, Validators.minLength(5)]),
+            line2: this.formbuilder.control(""),
+            state: this.formbuilder.group({
                 statename: new FormControl("", [Validators.required, Validators.minLength(5)]),
-                pincode: new FormControl(""),
+                pincode: this.formbuilder.control("", []),
             })
-        })
+        }),
+        myFruits: new FormArray([new FormControl("Sample")]), //this.fb.array([])
+        addresses: new FormArray([this.getSingleAddrGroup()]) //this.fb.array([])
     }, [this.formLevelVal]);
 
 
+    getSingleAddrGroup() {
+        return new FormGroup({
+            pincode: this.formbuilder.control("pincode"),
+            line1: this.formbuilder.control("ine1s"),
+        })
+    }
+    getAddressControl() {
+        return this.myForm.get('addresses') as FormArray;
+    }
+    
+    delAddress(i: any) {
+        this.getAddressControl().removeAt(i);
+    }
+
+    addAddress() {
+        this.getAddressControl().push(this.getSingleAddrGroup());
+    }
+    // single control
+    fruits() {
+        return this.myForm.get('myFruits') as FormArray;
+    }
+    delFruits(i: any) {
+        this.fruits().removeAt(i);
+    }
+
+    addFruits() {
+        this.fruits().push(new FormControl("Sample"));
+    }
+
     // Read Dynamic Route
-    constructor(public actived: ActivatedRoute ) {
-       
-         
+    constructor(public actived: ActivatedRoute, public formbuilder: FormBuilder) {
+
+
         this.name = "";
         // this is for /sdasd/3234243 dynamic parameters
         this.actived.params.subscribe((params: any) => {
@@ -58,7 +90,7 @@ export class AccountComponent implements AfterViewInit {
 
         this.actived.data.subscribe((data: any) => {
             console.log(data);
-           
+
         });
     }
 
