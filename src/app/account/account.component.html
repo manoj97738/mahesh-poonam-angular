@@ -38,19 +38,18 @@
     </h2>
     <ng-container formArrayName="myFruits">
         <ng-container *ngFor="let fruitSingle of fruits().controls; let i = index">
-         <h1> <input [formControlName]="i" /> <button type="button" (click)="delFruits(i)">Delete</button></h1>   
+            <h1> <input [formControlName]="i" /> <button type="button" (click)="delFruits(i)">Delete</button></h1>
         </ng-container>
     </ng-container>
     <button type="button" (click)="addFruits()">Add fruits</button>
     <ng-container formArrayName="addresses">
         <ng-container *ngFor="let singleAddr of getAddressControl().controls; let i = index">
-            <div   [formGroupName]="i">
-                <h1> <input  formControlName ="pincode" />  <br/> 
-                    <input  formControlName ="line1" />
-                    <button type="button" (click)="delFruits(i)">Delete</button>
-                </h1>   
-
-            </div> 
+            <div [formGroupName]="i">
+                <h1> <input formControlName="pincode" /> <br />
+                    <input formControlName="line1" />
+                    <button type="button" (click)="delAddress(i)">Delete</button>
+                </h1>
+            </div>
         </ng-container>
     </ng-container>
     <button type="button" (click)="addAddress()">Add adfress</button>

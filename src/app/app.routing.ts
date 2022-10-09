@@ -3,6 +3,8 @@ import { Routes, RouterModule } from "@angular/router";
 import { AccountComponent } from './account/account.component';
 import { ContactComponent } from './contact/contact.component';
 import { CustomCommonModule } from "./custom.common.module";
+import { formHelper } from "./heleper";
+import { myService } from "./myservice";
 
 import { NotFoundComponent } from "./not-found/not-found.component";
 
@@ -23,12 +25,12 @@ const myRoute: Routes = [
         RouterModule.forRoot(myRoute),
         CustomCommonModule,
     ],
-
+    providers: [formHelper,myService],
     exports: [
         RouterModule, // this line is important
         ContactComponent,
         AccountComponent,
-        NotFoundComponent,
+        NotFoundComponent, 
     ]
 })
 export class AppRoutingModule {

@@ -1,7 +1,11 @@
+import { HttpClient } from "@angular/common/http";
 import { Component, Input, Output, EventEmitter, AfterViewInit } from "@angular/core";
 import { FormGroup, FormControl, Validators, ValidatorFn, AbstractControl, FormBuilder, FormArray } from "@angular/forms";
 import { ActivatedRoute, ActivatedRouteSnapshot, ParamMap, Router, RouterState, RouterStateSnapshot } from "@angular/router";
-import { Observable } from "rxjs";
+import { switchMap } from "rxjs";
+
+import { formHelper } from "../heleper";
+import { myService } from "../myservice";
 import { getControls, customValidators } from "../myvalidation";
 @Component({
     selector: "app-account",
@@ -26,8 +30,8 @@ export class AccountComponent implements AfterViewInit {
         name: getControls("", { req: true }),
         age: getControls("", { req: true }),
         gender: new FormControl("", [Validators.required, customValidators()]),
-        password: new FormControl("", Validators.required),
-        cnfpassword: new FormControl("", Validators.required),
+        password: this.formHelp.getControl("", Validators.required),
+        cnfpassword: this.formHelp.getControl("", Validators.required),
         address: new FormGroup({
             line1: this.formbuilder.control("", [Validators.required, Validators.minLength(5)]),
             line2: this.formbuilder.control(""),
@@ -50,7 +54,7 @@ export class AccountComponent implements AfterViewInit {
     getAddressControl() {
         return this.myForm.get('addresses') as FormArray;
     }
-    
+
     delAddress(i: any) {
         this.getAddressControl().removeAt(i);
     }
@@ -71,7 +75,12 @@ export class AccountComponent implements AfterViewInit {
     }
 
     // Read Dynamic Route
-    constructor(public actived: ActivatedRoute, public formbuilder: FormBuilder) {
+    constructor(
+        public formHelp: formHelper,
+        public actived: ActivatedRoute,
+        public formbuilder: FormBuilder,
+        public http: myService
+    ) {
 
 
         this.name = "";
@@ -116,12 +125,20 @@ export class AccountComponent implements AfterViewInit {
         console.log($event)
     }
     updateDtae() {
+        this.http.getRequest()
+            .subscribe((data) => {
+                console.log(data);
+            });
         this.isSubmit = true;
-        if (this.myForm.valid) {
-            console.log(this.myForm.value)
-        } else {
-            alert("Please enter valid data")
-        }
+        // if (this.myForm.valid) {
+        //     console.log(this.myForm.value);
+        //     this.http.get("https://jsonplaceholder.typicode.com/todos")
+        //         .subscribe((data) => {
+        //             console.log(data);
+        //         });
+        // } else {
+        //     alert("Please enter valid data")
+        // }
     }
     getErrors(control: string) {
         const controlRef: any = this.myForm.get(control);

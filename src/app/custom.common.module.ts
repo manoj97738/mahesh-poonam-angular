@@ -4,6 +4,8 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 import { MyCutsompipe } from "./mycustom.pipe";
 
+import { HttpClientModule } from '@angular/common/http'
+
 
 
 
@@ -15,13 +17,15 @@ import { MyCutsompipe } from "./mycustom.pipe";
     imports: [
         ReactiveFormsModule,
         FormsModule,
-        CommonModule
+        CommonModule,
+        HttpClientModule
     ],
     exports: [
         MyCutsompipe,
         ReactiveFormsModule,
         FormsModule,
-        CommonModule
+        CommonModule,
+        HttpClientModule
     ]
 })
 export class CustomCommonModule {
